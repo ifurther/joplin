@@ -6,10 +6,6 @@ RUN apt-get update \
     python \
     && rm -rf /var/lib/apt/lists/*
 
-# Download the init tool Tini and make it executable for use in the final image
-ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini-static /tini
-RUN chmod u+x /tini
-
 # Enables Yarn
 RUN corepack enable
 
@@ -54,13 +50,18 @@ RUN BUILD_SEQUENCIAL=1 yarn install --inline-builds \
 ### Final image
 FROM node:16-bullseye-slim
 
+RUN apt-get update \
+    && apt-get install -y \
+    gosu tini \
+    && rm -rf /var/lib/apt/lists/*
+
 ARG user=joplin
 RUN useradd --create-home --shell /bin/bash $user
+RUN userdel -r node
 
 USER $user
 
 COPY --chown=$user:$user --from=builder /build/packages /home/$user/packages
-COPY --chown=$user:$user --from=builder /tini /usr/local/bin/tini
 
 ENV NODE_ENV=production
 ENV RUNNING_IN_DOCKER=1
@@ -69,7 +70,7 @@ EXPOSE ${APP_PORT}
 # Use Tini to start Joplin Server:
 # https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#handling-kernel-signals
 WORKDIR /home/$user/packages/server
-ENTRYPOINT ["tini", "--"]
+ENTRYPOINT ["gosu", "$user:$user", "tini", "--"]
 CMD ["node", "dist/app.js"]
 
 # Build-time metadata
