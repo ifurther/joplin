@@ -11,16 +11,15 @@ isCommand() {
 
 Current_id=$(id -u)
 Current_group_id=$(id -g)
-Joplin_id=$(id -u joplin)
-Joplin_group_id=$(id -g joplin)
+APP_id=$(id -u USER)
+APP_group_id=$(id -g USER)
 
-set -- /usr/sbin/gosu $user:$user "$@"
-if [ $Current_id != $Joplin_id ]; then
-  groupmod --gid "$Current_group_id" $user
-  usermod --uid "$Current_id" $user
+if [ $Current_id != $APP_id ]; then
+  groupmod --gid $Current_group_id USER
+  usermod --uid $Current_id USER
 fi
 if isCommand "$1"; then
-  set -- /sbin/tini -- node dist/app.js "$@"
+  set -- /usr/sbin/gosu USER:USER /usr/bin/tini -- node dist/app.js "$@"
 fi
 
 exec "$@"
