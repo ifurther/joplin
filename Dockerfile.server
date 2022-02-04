@@ -64,6 +64,7 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN sed "s/USER/$user/g" -i /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
+RUN gosu $user:$user mkdir -p /home/$user/data
 
 ENV NODE_ENV=production
 ENV RUNNING_IN_DOCKER=1
@@ -74,6 +75,9 @@ EXPOSE ${APP_PORT}
 WORKDIR /home/$user/packages/server
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 CMD [ "node", "dist/app.js" ]
+
+# Volume
+VOLUME /home/$user/data
 
 # Build-time metadata
 # https://github.com/opencontainers/image-spec/blob/master/annotations.md
