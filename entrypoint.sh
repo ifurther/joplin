@@ -24,9 +24,9 @@ fi
 APP_id=$(id -u USER)
 APP_group_id=$(id -g USER)
 
-if [ "$Current_id" = "0" ] && [ $Current_id != $APP_id ]; then
-  groupmod -o -g "$Current_group_id" USER
-  usermod -o -u "$Current_id" USER
+if [ $Current_id != $APP_id ]; then
+  groupmod -o -g "$Current_group_id" USER || return 1
+  usermod -o -u "$Current_id" USER || return 1
 fi
 
 echo "
