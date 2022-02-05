@@ -7,7 +7,6 @@ if [[ "$*" == node*dist/app.js* ]] && [ "$(id -u)" = '0' ]; then
 fi
 
 if [[ "$*" == node*dist/app.js* ]]; then
-	mkdir -p /home/USER/packages/server/logs || return 1
 	set -- /usr/bin/tini -- "$@"
 fi
 
