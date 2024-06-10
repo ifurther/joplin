@@ -61,6 +61,14 @@
             "x64",
             "ia32"
           ]
+        },
+        {
+          "target": "appx",
+          "arch": [
+            "x64",
+            "ia32",
+			"arm64"
+          ]
         }
       ],
       "extraFiles": [
@@ -78,6 +86,13 @@
       "allowToChangeInstallationDirectory": false,
       "differentialPackage": false
     },
+    "appx": {
+      "applicationId": "Ifurther.Joplindesktop",
+      "identityName": "51359Ifurther.Joplindesktop",
+	  "displayName": "Joplin-desktop",
+	  "publisher": "CN=75B28F8D-26B8-4FB9-8EBA-8EE5246A6EFB",
+	  "publisherDisplayName": "Ifurther"
+	},
     "portable": {
       "artifactName": "${productName}Portable.${ext}"
     },

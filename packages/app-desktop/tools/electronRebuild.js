@@ -1,7 +1,7 @@
 const execCommand = require('./execCommand');
 
 const isArm64 = () => {
-	return process.platform === 'arm64';
+	return process && process.arch === 'arm64';
 };
 
 const isWindows = () => {
@@ -30,8 +30,12 @@ async function main() {
 	if (isWindows()) {
 		// Cannot run this in parallel, or the 64-bit version might end up
 		// with 32-bit files and vice-versa
-		console.info(await execCommand(['yarn', 'run', 'electron-rebuild', forceAbiArgs, '--arch ia32'].join(' ')));
-		console.info(await execCommand(['yarn', 'run', 'electron-rebuild', forceAbiArgs, '--arch x64'].join(' ')));
+		if (isArm64()) {
+			console.info(await execCommand(['yarn', 'run', 'electron-rebuild', forceAbiArgs, '--arch arm64'].join(' ')));
+		} else {
+			console.info(await execCommand(['yarn', 'run', 'electron-rebuild', forceAbiArgs, '--arch ia32'].join(' ')));
+			console.info(await execCommand(['yarn', 'run', 'electron-rebuild', forceAbiArgs, '--arch x64'].join(' ')));
+		}
 	} else if (isArm64()) {
 		// Keytar needs it's own electron-rebuild or else it will not fetch the
 		// existing prebuilt binary, this will cause cross-compilation to fail.
