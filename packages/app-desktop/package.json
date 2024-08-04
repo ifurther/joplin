@@ -67,7 +67,7 @@
           "arch": [
             "x64",
             "ia32",
-			"arm64"
+            "arm64"
           ]
         }
       ],
@@ -89,10 +89,10 @@
     "appx": {
       "applicationId": "Ifurther.Joplindesktop",
       "identityName": "51359Ifurther.Joplindesktop",
-	  "displayName": "Joplin-desktop",
-	  "publisher": "CN=75B28F8D-26B8-4FB9-8EBA-8EE5246A6EFB",
-	  "publisherDisplayName": "Ifurther"
-	},
+      "displayName": "Joplin-desktop",
+      "publisher": "CN=75B28F8D-26B8-4FB9-8EBA-8EE5246A6EFB",
+      "publisherDisplayName": "Ifurther"
+    },
     "portable": {
       "artifactName": "${productName}Portable.${ext}"
     },
