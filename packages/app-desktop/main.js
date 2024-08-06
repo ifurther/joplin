@@ -20,6 +20,10 @@ const registerCustomProtocols = require('./utils/customProtocols/registerCustomP
 // application name to the right string.
 electronApp.name = packageInfo.name;
 
+if (process.windowsStore) {
+	electronApp.setPath('appData', `${process.env.LOCALAPPDATA}/Packages/51359Ifurther.Joplindesktop_y8sny1zsqfpk8/AppData`);
+}
+
 process.on('unhandledRejection', (reason, p) => {
 	console.error('Unhandled promise rejection', p, 'reason:', reason);
 	process.exit(1);
